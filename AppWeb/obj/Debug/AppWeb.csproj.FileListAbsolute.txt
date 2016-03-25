@@ -18,3 +18,5 @@ c:\users\niand\documents\visual studio 2015\Projects\Obligatorio-Programacion3\A
 c:\users\niand\documents\visual studio 2015\Projects\Obligatorio-Programacion3\AppWeb\obj\Debug\AppWeb.csprojResolveAssemblyReference.cache
 c:\users\niand\documents\visual studio 2015\Projects\Obligatorio-Programacion3\AppWeb\obj\Debug\AppWeb.dll
 c:\users\niand\documents\visual studio 2015\Projects\Obligatorio-Programacion3\AppWeb\obj\Debug\AppWeb.pdb
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\AppWeb\bin\Dominio.dll
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\AppWeb\bin\Dominio.pdb

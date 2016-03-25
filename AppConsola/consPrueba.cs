@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppConsola
 {
-    public class Class1
+    public class consPrueba
     {
     }
 }
