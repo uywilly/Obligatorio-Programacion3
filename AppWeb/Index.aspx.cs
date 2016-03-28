@@ -49,8 +49,7 @@ namespace AppWeb
             // mientras haya filas en filasPrueba..
             while (filasPrueba.Read())
             {
-                Response.Write("ID:" + filasPrueba["id"].ToString());
-                Response.Write("Nombre:" + filasPrueba["nombre"].ToString()+"<br>");
+                ListBox1.Items.Add ("ID:" + filasPrueba["id"].ToString() + " Nombre:" + filasPrueba["nombre"].ToString());
             }
             // cierro la conexión
             conexion.Close();
