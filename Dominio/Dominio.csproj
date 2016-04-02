@@ -40,8 +40,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="domPrueba.cs" />
+    <Compile Include="EntidadesNegocio\Alojamiento.cs" />
+    <Compile Include="EntidadesNegocio\IEntity.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorio.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioAlojamientos.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioAnfitriones.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioAnuncios.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioHabitaciones.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioHuespedes.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioPersonas.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioRangoPrecios.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioReservas.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioRolesSistema.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioServicios.cs" />
+    <Compile Include="InterfacesRepositorio\IRepositorioUbicaciones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utiliddes\Utilidades.csproj">
+      <Project>{e3267de8-855b-466a-9cdc-e807433572c7}</Project>
+      <Name>Utilidades</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
