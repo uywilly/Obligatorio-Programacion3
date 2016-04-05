@@ -7,10 +7,9 @@ using Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace Dominio.EntidadesNegocio
 {
-    public class Alojamiento:IEntity
+    public abstract class Rol: IEntity
     {
         #region Properties
         public int Id { get; set; }
@@ -18,9 +17,9 @@ namespace Dominio.EntidadesNegocio
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo)";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
-        private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Rol VALUES (@tipo)";
+        private string cadenaUpdate = "UPDATE  Rol SET tipo = @tipo WHERE id = @id";
+        private string cadenaDelete = "DELETE  Rol WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -33,12 +32,9 @@ namespace Dominio.EntidadesNegocio
                     using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
                     {
                         cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        // acá va el resto de parametros que vamos a insertar...
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
                         return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
                     }
                 }
             }
@@ -87,7 +83,7 @@ namespace Dominio.EntidadesNegocio
         #endregion
 
         #region Validaciones
-        public bool Validar() // esto es cualquier cosa :)
+        public bool Validar() 
         {
             return this.Tipo.Length >= 3;
         }

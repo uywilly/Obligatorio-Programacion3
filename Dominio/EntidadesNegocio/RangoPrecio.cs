@@ -7,20 +7,21 @@ using Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace Dominio.EntidadesNegocio
 {
-    public class Alojamiento:IEntity
+    public class RangoPrecio:IEntity
     {
         #region Properties
+        public DateTime Fecha_ini { get; set; }
+        public DateTime Fecha_fin { get; set; }
+        public decimal Variacion_precio { get; set; }
         public int Id { get; set; }
-        public string Tipo { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo)";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
-        private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Ubicacion VALUES (@fecha_ini,@fecha_fin,@variacion_precio)";
+        private string cadenaUpdate = "UPDATE  Ubicacion SET fecha_ini = @fecha_ini, fecha_fin = @fecha_fin, variacion_precio = @variacion_precio WHERE id = @id";
+        private string cadenaDelete = "DELETE  Ubicacion WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -32,13 +33,12 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        // acá va el resto de parametros que vamos a insertar...
+                        cmd.Parameters.AddWithValue("@fecha_ini", this.Fecha_ini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", this.Fecha_fin);
+                        cmd.Parameters.AddWithValue("@variacion_precio", this.Variacion_precio);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
                         return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
                     }
                 }
             }
@@ -52,7 +52,9 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                        cmd.Parameters.AddWithValue("@fecha_ini", this.Fecha_ini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", this.Fecha_fin);
+                        cmd.Parameters.AddWithValue("@variacion_precio", this.Variacion_precio);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -80,23 +82,27 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Tipo = dr["tipo"].ToString();
+                //@fecha_ini,@fecha_fin,@variacion_precio
+                this.Fecha_ini = Convert.ToDateTime(dr["fecha_ini"].ToString());
+                this.Fecha_fin = Convert.ToDateTime(dr["fecha_fin"].ToString());
+                this.Variacion_precio = Convert.ToDecimal(dr["variacion_precio"].ToString());
+
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
         #endregion
 
         #region Validaciones
-        public bool Validar() // esto es cualquier cosa :)
+        public bool Validar()
         {
-            return this.Tipo.Length >= 3;
+            return true;
         }
         #endregion
 
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - " + this.Tipo;
+            return this.Id + " - " + this.Barrio;
         }
         #endregion
     }

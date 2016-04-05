@@ -7,20 +7,21 @@ using Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace Dominio.EntidadesNegocio
 {
-    public class Alojamiento:IEntity
+    class Servicio:IEntity
     {
         #region Properties
+        public string Descripcion { get; set; }
+        public string Nombre { get; set; }
+        public bool Activo { get; set; }
         public int Id { get; set; }
-        public string Tipo { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo)";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
-        private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Ubicacion VALUES (@nombre,@descripcion,@activo)";
+        private string cadenaUpdate = "UPDATE  Ubicacion SET nombre = @nombre, descripcion = @descripcion, activo = @activo WHERE id = @id";
+        private string cadenaDelete = "DELETE  Ubicacion WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -32,13 +33,12 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        // acá va el resto de parametros que vamos a insertar...
+                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+                        cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
+                        cmd.Parameters.AddWithValue("@activo", this.Activo);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
                         return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
                     }
                 }
             }
@@ -52,7 +52,9 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+                        cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
+                        cmd.Parameters.AddWithValue("@activo", this.Activo);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -80,23 +82,26 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Tipo = dr["tipo"].ToString();
+                //@nombre,@descripcion,@activo
+                this.Nombre = dr["nombre"].ToString();
+                this.Descripcion = dr["descripcion"].ToString();
+                this.Activo = Convert.ToBoolean(dr["activo"].ToString());
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
         #endregion
 
         #region Validaciones
-        public bool Validar() // esto es cualquier cosa :)
+        public bool Validar()
         {
-            return this.Tipo.Length >= 3;
+            return true;
         }
         #endregion
 
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - " + this.Tipo;
+            return this.Id + " - " + this.Nombre;
         }
         #endregion
     }

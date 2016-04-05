@@ -7,20 +7,23 @@ using Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace Dominio.EntidadesNegocio
 {
-    public class Alojamiento:IEntity
+    public class Ubicacion:IEntity
     {
+
         #region Properties
+        public string Ciudad { get; set; }
+        public string Barrio { get; set; }
+        public string DireccionLinea1 { get; set; }
+        public string DireccionLinea2 { get; set; }
         public int Id { get; set; }
-        public string Tipo { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo)";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
-        private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Ubicacion VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2)";
+        private string cadenaUpdate = "UPDATE  Ubicacion SET ciudad = @ciudad, barrio = @barrio, dirLinea1 = @dirLinea1, dirLinea2 = @dirLinea2 WHERE id = @id";
+        private string cadenaDelete = "DELETE  Ubicacion WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -32,13 +35,13 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        // acá va el resto de parametros que vamos a insertar...
+                        cmd.Parameters.AddWithValue("@ciudad", this.Ciudad);
+                        cmd.Parameters.AddWithValue("@barrio", this.Barrio);
+                        cmd.Parameters.AddWithValue("@dirLinea1", this.DireccionLinea1);
+                        cmd.Parameters.AddWithValue("@dirLinea2", this.DireccionLinea2);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
                         return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
                     }
                 }
             }
@@ -52,7 +55,10 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                        cmd.Parameters.AddWithValue("@ciudad", this.Ciudad);
+                        cmd.Parameters.AddWithValue("@barrio", this.Barrio);
+                        cmd.Parameters.AddWithValue("@dirLinea1", this.DireccionLinea1);
+                        cmd.Parameters.AddWithValue("@dirLinea2", this.DireccionLinea2);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -80,23 +86,27 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Tipo = dr["tipo"].ToString();
+                //@ciudad,@barrio,@dirLinea1,@dirLinea2
+                this.Ciudad = dr["ciudad"].ToString();
+                this.Barrio = dr["barrio"].ToString();
+                this.DireccionLinea1 = dr["dirLinea1"].ToString();
+                this.DireccionLinea1 = dr["dirLinea2"].ToString();
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
         #endregion
 
         #region Validaciones
-        public bool Validar() // esto es cualquier cosa :)
+        public bool Validar()
         {
-            return this.Tipo.Length >= 3;
+            return true;
         }
         #endregion
 
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - " + this.Tipo;
+            return this.Id + " - " + this.Barrio;
         }
         #endregion
     }

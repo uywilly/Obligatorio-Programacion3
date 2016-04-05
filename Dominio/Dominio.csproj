@@ -41,7 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntidadesNegocio\Alojamiento.cs" />
+    <Compile Include="EntidadesNegocio\Huesped.cs" />
     <Compile Include="EntidadesNegocio\IEntity.cs" />
+    <Compile Include="EntidadesNegocio\Persona.cs" />
+    <Compile Include="EntidadesNegocio\RangoPrecio.cs" />
+    <Compile Include="EntidadesNegocio\Rol.cs" />
+    <Compile Include="EntidadesNegocio\Servicio.cs" />
+    <Compile Include="EntidadesNegocio\Ubicacion.cs" />
     <Compile Include="InterfacesRepositorio\IRepositorio.cs" />
     <Compile Include="InterfacesRepositorio\IRepositorioAlojamientos.cs" />
     <Compile Include="InterfacesRepositorio\IRepositorioAnfitriones.cs" />

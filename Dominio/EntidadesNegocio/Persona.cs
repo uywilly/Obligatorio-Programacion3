@@ -7,20 +7,25 @@ using Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace Dominio.EntidadesNegocio
 {
-    public class Alojamiento:IEntity
+    public class Persona : IEntity
     {
+
         #region Properties
         public int Id { get; set; }
-        public string Tipo { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public int Ci { get; set; }
+        public string Email { get; set; }
+        public List<Rol> Roles { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo)";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
-        private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Persona VALUES (@nombre,@apellido,@ci,@email)";
+        private string cadenaUpdate = "UPDATE Persona SET nombre = @nombre, apellido = apellido, ci = @ci, email = @email WHERE id = @id";
+        private string cadenaDelete = "DELETE Persona WHERE id = @id";
+
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -28,17 +33,21 @@ namespace Dominio.EntidadesNegocio
         {
             if (this.Validar())
             {
+                //BdSQL retorna una SQLConnection con el string de conexion en el ConnectionString del WEbconfig 
                 using (SqlConnection cn = BdSQL.Conectar())
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        // acá va el resto de parametros que vamos a insertar...
+                        //Asigna el valor a los parametros usados en la consulta
+                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+                        cmd.Parameters.AddWithValue("@apellido", this.Apellido);
+                        cmd.Parameters.AddWithValue("@ci", this.Ci);
+                        cmd.Parameters.AddWithValue("@email", this.Email);
+                        //Abro la conexion
                         cn.Open();
+                        //Guardo la cantidad de lineas afectadas por la consulta
                         int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
                         return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
                     }
                 }
             }
@@ -52,7 +61,10 @@ namespace Dominio.EntidadesNegocio
                 {
                     using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+                        cmd.Parameters.AddWithValue("@apellido", this.Apellido);
+                        cmd.Parameters.AddWithValue("@ci", this.Ci);
+                        cmd.Parameters.AddWithValue("@email", this.Email);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -80,16 +92,21 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Tipo = dr["tipo"].ToString();
+                //@nombre,@apellido,@ci,@email
+                this.Nombre = dr["nombre"].ToString();
+                this.Apellido = dr["apellido"].ToString();
+                this.Ci = Convert.ToInt32(dr["ci"].ToString());
+                this.Email = dr["email"].ToString();
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
-        #endregion
 
+        #endregion
+       
         #region Validaciones
-        public bool Validar() // esto es cualquier cosa :)
+        public bool Validar()
         {
-            return this.Tipo.Length >= 3;
+            return true;
         }
         #endregion
 
@@ -99,5 +116,7 @@ namespace Dominio.EntidadesNegocio
             return this.Id + " - " + this.Tipo;
         }
         #endregion
+
+
     }
 }
