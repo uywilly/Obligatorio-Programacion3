@@ -9,19 +9,19 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    public class RangoPrecio:IEntity
+    public class Reserva:IEntity
     {
         #region Properties
         public DateTime Fecha_ini { get; set; }
         public DateTime Fecha_fin { get; set; }
-        public decimal Variacion_precio { get; set; }
+        //public List<Habitacion> Habitaciones { get; set; }
         public int Id { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO RangoPrecio VALUES (@fecha_ini,@fecha_fin,@variacion_precio)";
-        private string cadenaUpdate = "UPDATE  RangoPrecio SET fecha_ini = @fecha_ini, fecha_fin = @fecha_fin, variacion_precio = @variacion_precio WHERE id = @id";
-        private string cadenaDelete = "DELETE  RangoPrecio WHERE id = @id";
+        private string cadenaInsert = "INSERT INTO Reserva VALUES (@fecha_ini,@fecha_fin)";
+        private string cadenaUpdate = "UPDATE  Reserva SET fecha_ini = @fecha_ini, fecha_fin = @fecha_fin WHERE id = @id";
+        private string cadenaDelete = "DELETE  Reserva WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -35,7 +35,6 @@ namespace Dominio.EntidadesNegocio
                     {
                         cmd.Parameters.AddWithValue("@fecha_ini", this.Fecha_ini);
                         cmd.Parameters.AddWithValue("@fecha_fin", this.Fecha_fin);
-                        cmd.Parameters.AddWithValue("@variacion_precio", this.Variacion_precio);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
                         return afectadas == 1;
@@ -54,7 +53,6 @@ namespace Dominio.EntidadesNegocio
                     {
                         cmd.Parameters.AddWithValue("@fecha_ini", this.Fecha_ini);
                         cmd.Parameters.AddWithValue("@fecha_fin", this.Fecha_fin);
-                        cmd.Parameters.AddWithValue("@variacion_precio", this.Variacion_precio);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -85,8 +83,6 @@ namespace Dominio.EntidadesNegocio
                 //@fecha_ini,@fecha_fin,@variacion_precio
                 this.Fecha_ini = Convert.ToDateTime(dr["fecha_ini"].ToString());
                 this.Fecha_fin = Convert.ToDateTime(dr["fecha_fin"].ToString());
-                this.Variacion_precio = Convert.ToDecimal(dr["variacion_precio"].ToString());
-
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
@@ -102,7 +98,7 @@ namespace Dominio.EntidadesNegocio
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - " + this.Barrio;
+            return this.Id;
         }
         #endregion
     }

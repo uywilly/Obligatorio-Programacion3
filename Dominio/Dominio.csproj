@@ -45,6 +45,7 @@
     <Compile Include="EntidadesNegocio\IEntity.cs" />
     <Compile Include="EntidadesNegocio\Persona.cs" />
     <Compile Include="EntidadesNegocio\RangoPrecio.cs" />
+    <Compile Include="EntidadesNegocio\Reserva.cs" />
     <Compile Include="EntidadesNegocio\Rol.cs" />
     <Compile Include="EntidadesNegocio\Servicio.cs" />
     <Compile Include="EntidadesNegocio\Ubicacion.cs" />

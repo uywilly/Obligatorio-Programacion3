@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    class Servicio:IEntity
+    public class Servicio:IEntity
     {
         #region Properties
         public string Descripcion { get; set; }
@@ -19,9 +19,9 @@ namespace Dominio.EntidadesNegocio
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Ubicacion VALUES (@nombre,@descripcion,@activo)";
-        private string cadenaUpdate = "UPDATE  Ubicacion SET nombre = @nombre, descripcion = @descripcion, activo = @activo WHERE id = @id";
-        private string cadenaDelete = "DELETE  Ubicacion WHERE id = @id";
+        private string cadenaInsert = "INSERT INTO Servicio VALUES (@nombre,@descripcion,@activo)";
+        private string cadenaUpdate = "UPDATE  Servicio SET nombre = @nombre, descripcion = @descripcion, activo = @activo WHERE id = @id";
+        private string cadenaDelete = "DELETE  Servicio WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
