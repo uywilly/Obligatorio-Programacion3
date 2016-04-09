@@ -1,5 +1,0 @@
-C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Utiliddes\bin\Debug\Utiliddes.dll
-C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Utiliddes\bin\Debug\Utiliddes.pdb
-C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Utiliddes\obj\Debug\Utilidades.csprojResolveAssemblyReference.cache
-C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Utiliddes\obj\Debug\Utiliddes.dll
-C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Utiliddes\obj\Debug\Utiliddes.pdb
