@@ -16,11 +16,11 @@ namespace Dominio.EntidadesNegocio
         public string Tipo { get; set; }
         public int Cupo_max { get; set; }
         //public Ubicacion Ubicacion { get; set;}
-        //public List<RangoPrecio> Precios_temporada { get; set; }
+        public List<RangoPrecio> Precios_temporada { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo,@cupo_max)";
+        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo,@cupo_max); SELECT CAST(SCOPE_IDENTIY() AS INT);";
         private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo, cupo_max=@cupo_max WHERE id=@id";
         private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
         #endregion
@@ -30,22 +30,49 @@ namespace Dominio.EntidadesNegocio
         {
             if (this.Validar())
             {
-                using (SqlConnection cn = BdSQL.Conectar())
+                SqlConnection cn = BdSQL.Conectar();
+                SqlTransaction trn = null;
+                try
                 {
-                    using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
+                    SqlCommand cmd = new SqlCommand(cadenaInsert, cn);
+
+                    // acá va el resto de parametros que vamos a insertar...
+                    cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                    cmd.Parameters.AddWithValue("@cupo_max", this.Cupo_max);
+                    //abrimos la coneccion
+                    cn.Open();
+
+                    //iniciamos la transaccion
+                    trn = cn.BeginTransaction();
+                    cmd.Transaction = trn;
+                    int idAlojamiento = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.CommandText = "INSERT INTO RangoPrecio VALUES (@fecha_inicio,@fecha_fin,@variacion_precio)";
+                    foreach (RangoPrecio unR in this.Precios_temporada)
                     {
-                        cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        cmd.Parameters.AddWithValue("@cupo_max", this.Cupo_max);
-                        // acá va el resto de parametros que vamos a insertar...
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        // retorna la comparacion de afectadas con 1 :) true/false
-                        return afectadas == 1;
-                        // no hace falta el close y el dispose porque usamos el using :)
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@fecha_inicio", unR.Fecha_inicio);
+                        cmd.Parameters.AddWithValue("@fecha_fin", unR.Fecha_fin);
+                        cmd.Parameters.AddWithValue("@variacion_precio", unR.Variacion_precio);
+                        cmd.ExecuteNonQuery();
                     }
+                    trn.Commit();
+                    return true;
+
+                }//fin del try
+                catch (Exception ex)
+                {
+                    //falta hacer algo con la excepcion
+                    trn.Rollback();
+                    return false;
+
+                }//fin del catch
+                finally
+                {
+                    trn.Dispose();
+                    cn.Close();
+                    cn.Dispose();
                 }
             }
-            return false;
         }
         public bool Update()
         {
