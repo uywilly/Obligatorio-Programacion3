@@ -1,0 +1,5 @@
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Dominio\bin\Debug\Dominio.dll
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Dominio\bin\Debug\Dominio.pdb
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Dominio\obj\Debug\Dominio.csprojResolveAssemblyReference.cache
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Dominio\obj\Debug\Dominio.dll
+C:\Users\niand\Documents\Visual Studio 2015\Projects\Obligatorio-Programacion3\Dominio\obj\Debug\Dominio.pdb
