@@ -52,23 +52,50 @@ namespace Repositorios
 
         public Alojamiento FindById(int id)
         {
-            string cadenaFind = "SELECT id,tipo,cupo_max FROM Alojamiento WHERE id=@id";
-            Alojamiento a = null;
-            using (SqlConnection cn = BdSQL.Conectar())
+            //string cadenaFind = "SELECT id,tipo,cupo_max FROM Alojamiento WHERE id=@id";
+            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2id,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
+            SqlConnection cn = BdSQL.Conectar();
+            List<RangoPrecio> precios_temporada = new List<RangoPrecio>();
+            Alojamiento unA = null;
+            try
             {
-                using (SqlCommand cmd = new SqlCommand(cadenaFind, cn))
+                
+                SqlCommand cmd = new SqlCommand(cadenaFind, cn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader != null && reader.Read())
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader != null && reader.Read())
-                    {
-                        a = new Alojamiento();
-                        a.Load(reader);
-                    }
+                    unA = new Alojamiento();
+                    unA.Load(reader);
                 }
+                //Cargo los elementos de la lista de rango precios
+                cmd.CommandText = "SELECT * FROM RangoPrecio WHERE idAlojamiento = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    RangoPrecio unR = new RangoPrecio();
+                    unA.loadRangoPrecio(unR,reader);
+                    precios_temporada.Add(unR);
+                }
+                unA.Precios_temporada = precios_temporada;
+                
+                return unA;
             }
-            return a;
+            catch(Exception ex)
+            {
+                //mostrar exception
+                unA.Precios_temporada = null;
+                return unA = null;
+            }
+            finally
+            {
+                cn.Close();
+                cn.Dispose();
+            }
         }
 
         public bool Update(Alojamiento obj)

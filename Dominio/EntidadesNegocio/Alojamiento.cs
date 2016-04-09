@@ -15,7 +15,7 @@ namespace Dominio.EntidadesNegocio
         public int Id { get; set; }
         public string Tipo { get; set; }
         public int Cupo_max { get; set; }
-        //public Ubicacion Ubicacion { get; set;}
+        public Ubicacion Ubicacion { get; set;}
         public List<RangoPrecio> Precios_temporada { get; set; }
         #endregion
 
@@ -73,6 +73,10 @@ namespace Dominio.EntidadesNegocio
                     cn.Dispose();
                 }
             }
+            else
+            {
+                return false;
+            }
         }
         public bool Update()
         {
@@ -114,6 +118,16 @@ namespace Dominio.EntidadesNegocio
                 this.Tipo = dr["tipo"].ToString();
                 this.Id = Convert.ToInt32(dr["id"]);
                 this.Cupo_max = Convert.ToInt32(dr["cupo_max"]);
+            }
+        }
+        public void loadRangoPrecio(RangoPrecio unR, IDataRecord dr)
+        {
+            if (dr != null)
+            {
+                unR.Fecha_inicio = dr.GetDateTime(dr.GetOrdinal("fecha_inicio"));
+                unR.Fecha_fin = dr.GetDateTime(dr.GetOrdinal("fecha_fin"));
+                unR.Variacion_precio = dr.GetDecimal(dr.GetOrdinal("variacion_precio"));
+                this.Id = Convert.ToInt32(dr["id"]);
             }
         }
         #endregion
