@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntidadesNegocio\Alojamiento.cs" />
+    <Compile Include="EntidadesNegocio\RangoFechas.cs" />
     <Compile Include="EntidadesNegocio\Huesped.cs" />
     <Compile Include="EntidadesNegocio\IEntity.cs" />
     <Compile Include="EntidadesNegocio\Persona.cs" />
