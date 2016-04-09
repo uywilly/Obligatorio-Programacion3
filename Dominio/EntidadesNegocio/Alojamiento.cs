@@ -46,15 +46,26 @@ namespace Dominio.EntidadesNegocio
                     trn = cn.BeginTransaction();
                     cmd.Transaction = trn;
                     int idAlojamiento = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.CommandText = "INSERT INTO RangoPrecio VALUES (@fecha_inicio,@fecha_fin,@variacion_precio)";
+                    cmd.CommandText = "INSERT INTO RangoPrecio VALUES (@fecha_inicio,@fecha_fin,@variacion_precio,@id_alojamiento)";
                     foreach (RangoPrecio unR in this.Precios_temporada)
                     {
                         cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@id_alojamiento", idAlojamiento);
                         cmd.Parameters.AddWithValue("@fecha_inicio", unR.Fecha_inicio);
                         cmd.Parameters.AddWithValue("@fecha_fin", unR.Fecha_fin);
                         cmd.Parameters.AddWithValue("@variacion_precio", unR.Variacion_precio);
                         cmd.ExecuteNonQuery();
                     }
+                    // Agregar la ubicacion 
+                    
+                    cmd.CommandText = "INSERT INTO Ubicacion VALUES (@id_alojamiento,@ciudad,@barrio,@dirLinea1,@dirLinea2)";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@id_alojamiento", idAlojamiento);
+                    cmd.Parameters.AddWithValue("@ciudad", this.Ubicacion.Ciudad);
+                    cmd.Parameters.AddWithValue("@barrio", this.Ubicacion.Barrio);
+                    cmd.Parameters.AddWithValue("@dirLinea1", this.Ubicacion.DireccionLinea1);
+                    cmd.Parameters.AddWithValue("@dirLinea2", this.Ubicacion.DireccionLinea2);
+                    cmd.ExecuteNonQuery();
                     trn.Commit();
                     return true;
 

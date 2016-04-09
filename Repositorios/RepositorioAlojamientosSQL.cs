@@ -58,22 +58,19 @@ namespace Repositorios
             List<RangoPrecio> precios_temporada = new List<RangoPrecio>();
             Alojamiento unA = null;
             try
-            {
-                
+            {   
                 SqlCommand cmd = new SqlCommand(cadenaFind, cn);
                 cmd.Parameters.AddWithValue("@id", id);
                 cn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
-
+                //traigo alojamiento
                 if (reader != null && reader.Read())
                 {
                     unA = new Alojamiento();
                     unA.Load(reader);
                 }
                 //Cargo los elementos de la lista de rango precios
-                cmd.CommandText = "SELECT * FROM RangoPrecio WHERE idAlojamiento = @id";
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandText = "SELECT * FROM RangoPrecio WHERE id_alojamiento = @id";
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -82,7 +79,17 @@ namespace Repositorios
                     precios_temporada.Add(unR);
                 }
                 unA.Precios_temporada = precios_temporada;
-                
+
+                // traigo la ubicacion 
+                cmd.CommandText = "SELECT * FROM Ubicacion WHERE id_alojamiento = @id";
+                reader = cmd.ExecuteReader();
+                if (reader != null && reader.Read())
+                {
+                    Ubicacion unaU = new Ubicacion();
+                    unaU.Load(reader);
+                    unA.Ubicacion = unaU;   
+                }
+
                 return unA;
             }
             catch(Exception ex)
